@@ -1,56 +1,73 @@
-# Docker Ödevi Teslim Raporu
+# OpenAPI Tasarımı Ödevi Teslim Raporu
 
 ## 👤 Öğrenci Bilgileri
 - **Ad Soyad**: Burak Yüceler
 - **Öğrenci Numarası**: 170422852
-s
+
 ---
 
-## 🧩 Aşama 1 – Docker Workshop Uygulaması
+## 📂 OpenAPI YAML Dosyası
+
+- **openapi.yaml** dosyasını projenizin GitHub reposuna yükleyiniz.
+- Swagger Editor ile test ettiğinizden emin olunuz.
 
 ### 🔗 GitHub Repo Linki
-[Workshop GitHub reposu linkinizi buraya yazınız]
-
-### 🐳 Docker Hub Image Linki
-[Workshop image linkiniz buraya yazınız — örn: https://hub.docker.com/r/kullaniciadi/getting-started]
-
-### 📝 Kısa Açıklama
-Docker Docs üzerindeki "Get Started Workshop" 8 adım halinde tamamlandı. Her adımda `Dockerfile`, `docker run`, `docker-compose`, volume, bind mount gibi konular uygulamalı olarak işlendi.
+https://github.com/Burakyc/openapi-library-system
 
 ---
 
-## 🧪 Aşama 2 – Kendi Mini Docker Projeniz
+## 📝 API Açıklaması
 
-### 🔗 GitHub Repo Linki
-[Mini proje GitHub reposu linkinizi buraya yazınız]
+Bu API, üniversitenin çevrim içi kütüphane sistemi için tasarlanmıştır ve üç ana varlık üzerinden CRUD işlemleri sağlamaktadır:
 
-### 🐳 Docker Hub Image Linki
-[Mini proje image linkiniz buraya yazınız — örn: https://hub.docker.com/r/kullaniciadi/my-project]
+Varlıklar (entities):
 
-### 📝 Proje Açıklaması
-Kendi seçtiğim bir web uygulamasını (örnek: Flask, Node.js, Django, React+API vb.) Docker ile containerize ettim. Projede:
-- En az 1 web servisi + 1 veritabanı (MySQL, MongoDB, SQLite)
-- Dockerfile ve compose.yaml yazıldı
-- Volume, network ve ortam değişkenleri kullanıldı
+books: Kitap bilgilerini yönetir.
+students: Öğrenci bilgilerini yönetir.
+loans: Kitap ödünç alma ve iade işlemlerini yönetir.
+CRUD İşlemleri:
 
----
+GET /books, POST /books, PUT /books/{id}, DELETE /books/{id}, GET /books/{id} gibi endpoint’ler kitaplar için.
+Benzer şekilde students ve loans endpoint’leri de aynı CRUD yapısına uygun şekilde tasarlanmıştır.
+components/schemas: Tüm veri modelleri (Book, Student, Loan) bu bölümde detaylıca tanımlandı.
 
-## 📂 Açık Kaynak Yapı Dosyaları (Her İki Repo İçin Geçerlidir)
+parameters: Path ve query parametreleri (id, page, size) burada tanımlı.
 
-| Dosya Adı            | Açıklama                                        |
-| -------------------- | ----------------------------------------------- |
-| `README.md`          | Proje tanıtımı, kurulum ve kullanım yönergeleri |
-| `LICENSE`            | [MIT / Apache 2.0 / GPL vs.] lisans metni       |
-| `CONTRIBUTING.md`    | Katkı kuralları ve PR süreçleri                 |
-| `NOTICE.md`          | Üçüncü parti lisanslara atıf (varsa)            |
-| `CODE_OF_CONDUCT.md` | Topluluk davranış kuralları                     |
-| `SECURITY.md`        | Güvenlik açıkları bildirimi (isteğe bağlı)      |
-| `PATENTS`            | (Varsa özel patent bildirimi)                   |
-| `.dockerignore`      | Build dışı bırakılan dosyalar                   |
+responses: Hata durumları (400, 404, 500) ve başarılı cevaplar burada açıklandı.
+
+Sayfalama: GET /books endpoint’inde page ve size parametreleriyle uygulandı.
+
+Ek Açıklamalar: API key tabanlı basit bir securitySchemes örneği de eklendi.
 
 ---
 
-## 📝 Ek Notlar
+## 🧪 Test Notları (Opsiyonel)
 
-[Varsa ek açıklamalarınızı buraya yazabilirsiniz.]
+Swagger Editor üzerinden test ettiğiniz örnek istek/yanıtları özetleyebilirsiniz:
+- `GET /books` çağrısında ne döner?
+[
+  {
+    "id": "b1a2c3d4-e5f6-7890-abcd-1234567890ab",
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "isbn": "9780132350884",
+    "publisher": "Prentice Hall",
+    "pageCount": 464,
+    "stock": 5
+  }
+]
+- `POST /students` için örnek `requestBody` nedir?
+{
+  "id": "a1b2c3d4-e5f6-7890-abcd-1234567890cd",
+  "name": "Jane Doe",
+  "studentNumber": "2023012345",
+  "email": "jane.doe@uni-library.edu.tr",
+  "isActive": true
+}
+- Hatalı bir istek için dönen `400` örneği var mı?
+{
+  "message": "Invalid request parameters."
+}
+---
+
 
