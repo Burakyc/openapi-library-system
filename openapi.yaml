@@ -1,0 +1,149 @@
+openapi: 3.0.3
+info:
+  title: OPENAPI LIBRARY SYSTEM
+  version: 1.0.0
+  description: This API is developed to manage the university’s online library system. It includes all essential CRUD operations for books, students, and loan transactions.
+  contact:
+    name: Library API Support
+    email: support@uni-library.edu.tr
+servers:
+- url: https://api.uni-library.edu.tr/v1
+  description: Production API Server
+- url: https://sandbox.uni-library.edu.tr/v1
+  description: Sandbox (Test) Server
+tags:
+- name: Books
+  description: Operations for book management
+- name: Students
+  description: Student registration and management
+- name: Loans
+  description: Book loan and return operations
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        author:
+          type: string
+        isbn:
+          type: string
+          format: isbn-13
+        publisher:
+          type: string
+        pageCount:
+          type: integer
+        stock:
+          type: integer
+      required:
+      - id
+      - title
+      - author
+      - isbn
+      - publisher
+      - pageCount
+      - stock
+    Student:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        studentNumber:
+          type: string
+        email:
+          type: string
+          format: email
+        isActive:
+          type: boolean
+      required:
+      - id
+      - name
+      - studentNumber
+      - email
+      - isActive
+    Loan:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        studentId:
+          type: string
+          format: uuid
+        bookId:
+          type: string
+          format: uuid
+        loanDate:
+          type: string
+          format: date
+        returnDate:
+          type: string
+          format: date
+          nullable: true
+        status:
+          type: string
+          enum:
+          - ongoing
+          - returned
+          - late
+      required:
+      - id
+      - studentId
+      - bookId
+      - loanDate
+      - status
+  parameters:
+    BookIdParam:
+      name: id
+      in: path
+      required: true
+      description: Unique identifier of the book (UUID)
+      schema:
+        type: string
+        format: uuid
+    PageParam:
+      name: page
+      in: query
+      description: Page number (default: 1)
+      schema:
+        type: integer
+        default: 1
+    SizeParam:
+      name: size
+      in: query
+      description: Number of records per page (default: 10)
+      schema:
+        type: integer
+        default: 10
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          example:
+            message: The requested resource was not found.
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          example:
+            message: Invalid request parameters.
+    InternalError:
+      description: Server error
+      content:
+        application/json:
+          example:
+            message: An unexpected error occurred. Please try again.
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+paths: {}
